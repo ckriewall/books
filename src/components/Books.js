@@ -3,12 +3,9 @@
 import React, { Fragment, useState, useEffect } from "react";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
-import BookItem from "./BookItem";
-import Card from "react-bootstrap/Card";
-import Image from "react-bootstrap/Image";
 import Spinner from "react-bootstrap/Spinner";
 
-const AMAZON_ISBN_SEARCH = "https://www.amazon.com/isbn-search/s?k=";
+// const AMAZON_ISBN_SEARCH = 'https://www.amazon.com/isbn-search/s?k=';
 
 const Books = () => {
   const [data, setData] = useState([]);
