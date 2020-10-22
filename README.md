@@ -7,8 +7,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ### BookList
 
 - ~~Character limit for description~~
-- Link to Buy on Amazon
-- Link to Details
+- ~~Link to Amazon~~
+- Link to Amazon item page
+- Link to Details modal
 
 ### BookDetail
 

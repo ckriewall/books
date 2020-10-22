@@ -2,7 +2,9 @@
 
 import React, { Fragment, useState, useEffect } from "react";
 import axios from "axios";
+import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
+import Modal from "react-bootstrap/Modal";
 
 // const AMAZON_ISBN_SEARCH = 'https://www.amazon.com/isbn-search/s?k=';
 const GOOGLE_BOOKS_API = "https://www.googleapis.com/books/v1/";
@@ -27,6 +29,11 @@ const BookList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
+  //modal state
+  const [show, setShow] = useState(false);
+  const handleCloseModal = () => setShow(false);
+  const handleShowModal = () => setShow(true);
+
   useEffect(() => {
     const fetchData = async () => {
       setIsError(false);
@@ -46,11 +53,7 @@ const BookList = () => {
   }, [url]);
 
   const handleAmazon = () => {
-    console.log("Amazon was clicked");
-  };
-
-  const handleInfo = () => {
-    console.log("Info was clicked");
+    window.open("https://amazon.com");
   };
 
   return (
@@ -116,14 +119,14 @@ const BookList = () => {
                     <button
                       type="button"
                       className="btn btn-sm btn-dark mr-1"
-                      onClick={handleAmazon}
+                      onClick={handleAmazon.bind(this, item.volumeInfo.title)}
                     >
                       Buy on Amazon
                     </button>
                     <button
                       type="button"
                       className="btn btn-sm btn-outline-info"
-                      onClick={handleInfo}
+                      onClick={handleShowModal}
                     >
                       Info...
                     </button>
@@ -134,6 +137,21 @@ const BookList = () => {
           </ul>
         </div>
       )}
+
+      <Modal show={show} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Book Title</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, book details go here!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleCloseModal}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Fragment>
   );
 };
