@@ -2,9 +2,8 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import Footer from "./components/Footer";
-import Home from "./components/Home";
 import NavBar from "./components/NavBar";
-import Books from "./components/Books";
+import BookList from "./components/BookList";
 
 function App() {
   return (
@@ -17,10 +16,10 @@ function App() {
               {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
               <Route path="/books">
-                <Books />
+                <BookList />
               </Route>
               <Route path="/">
-                <Home />
+                <BookList />
               </Route>
             </Switch>
           </Col>

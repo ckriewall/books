@@ -1,5 +1,5 @@
-import React, { Fragment } from "react";
-import { Nav, Navbar, NavLink } from "react-bootstrap";
+import React from "react";
+import { Navbar, NavLink } from "react-bootstrap";
 
 const NavBar = () => {
   return (
@@ -15,21 +15,16 @@ const NavBar = () => {
           <span className="text-success">KrieBooks</span>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto" bg="light">
-            <Nav.Link as={NavLink} href="books">
-              Books
-            </Nav.Link>
-          </Nav>
+        {/* <Navbar.Collapse id='basic-navbar-nav'>
           <Nav>
             <Fragment>
-              <Nav.Link provider="google">
-                {" "}
-                <i className="fab fa-google"></i> Login
+              <Nav.Link provider='google'>
+                {' '}
+                <i className='fab fa-google'></i> Login
               </Nav.Link>
             </Fragment>
           </Nav>
-        </Navbar.Collapse>
+        </Navbar.Collapse> */}
       </Navbar>
     </div>
   );
