@@ -1,13 +1,10 @@
-//TODO: show book details in modal. link to amazon search
-
 import React, { Fragment, useState, useEffect } from "react";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
 import Modal from "react-bootstrap/Modal";
 
-// const AMAZON_ISBN_SEARCH = 'https://www.amazon.com/isbn-search/s?k=';
-const GOOGLE_BOOKS_API = "https://www.googleapis.com/books/v1/";
+import * as Constants from "../constants";
 
 const trimDescription = (description) => {
   const maxLength = 100;
@@ -16,20 +13,23 @@ const trimDescription = (description) => {
   ) : description && description.length < maxLength ? (
     description
   ) : (
-    <span className="font-italic">
-      Oops! Google Books doesn't have a description.
-    </span>
+    <span className="font-italic">{Constants.NO_DESCRIPTION}</span>
   );
 };
 
 const BookList = () => {
+  // database search state
   const [data, setData] = useState([]);
-  const [query, setQuery] = useState("verne");
-  const [url, setUrl] = useState(GOOGLE_BOOKS_API + "volumes?q=verne");
+  const [query, setQuery] = useState("Fahrenheit 451");
+  const [url, setUrl] = useState(
+    Constants.GOOGLE_BOOKS_API + `volumes?q=${query}`
+  );
+
+  // loading and error state
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  //modal state
+  // modal state
   const [show, setShow] = useState(false);
   const handleCloseModal = () => setShow(false);
   const handleShowModal = () => setShow(true);
@@ -52,14 +52,15 @@ const BookList = () => {
     fetchData();
   }, [url]);
 
-  const handleAmazon = () => {
-    window.open("https://amazon.com");
+  const handleAmazon = (title) => {
+    window.open(Constants.AMAZON_SEARCH + title);
   };
 
   return (
     <Fragment>
       <form className="form-inline">
-        <div className="form-group mx-sm-3 mb-2">
+        <div className="form-group mx-sm-2 mb-2">
+          {/* search box */}
           <label htmlFor="inputSearch" className="sr-only">
             Search
           </label>
@@ -72,17 +73,33 @@ const BookList = () => {
             placeholder="Author, title, ISBN..."
           />
         </div>
-        <button
-          type="button"
-          className="btn btn-primary mb-2"
-          onClick={() => setUrl(GOOGLE_BOOKS_API + `volumes?q=${query}`)}
-        >
-          Search
-        </button>
+
+        {/* search button */}
+        {!isLoading ? (
+          <button
+            type="button"
+            className="btn btn-primary mb-2"
+            onClick={() =>
+              setUrl(Constants.GOOGLE_BOOKS_API + `volumes?q=${query}`)
+            }
+          >
+            Search
+          </button>
+        ) : (
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        )}
       </form>
 
-      {isError && <div>Something went wrong ...</div>}
+      {/* error output */}
+      {isError && (
+        <div className="alert alert-danger" role="alert">
+          Something went wrong...
+        </div>
+      )}
 
+      {/* search results */}
       {!isLoading && (
         <div>
           <ul className="list-unstyled">
@@ -102,33 +119,55 @@ const BookList = () => {
                   <Image
                     src="https://via.placeholder.com/128x193"
                     className="mr-3"
-                    alt="None provided"
+                    alt={Constants.IMG_NOT_AVAILABLE}
                     rounded
                   />
                 )}
 
                 <div className="media-body">
+                  {/* item title */}
                   <h5 className="mt-0 mb-1">{item.volumeInfo.title}</h5>
-                  <p className="font-weight-light">
-                    {item.volumeInfo.authors
-                      ? item.volumeInfo.authors.toString()
-                      : "Unknown Author"}
-                  </p>
+
+                  {/* author info */}
+                  <ul className="list-inline font-weight-light">
+                    {item.volumeInfo.authors &&
+                      item.volumeInfo.authors.map((auth) => (
+                        <li className="list-inline-item" key={auth}>
+                          {auth}
+                        </li>
+                      ))}
+                  </ul>
+
+                  {/* isbn details */}
+                  <ul className="list-inline small mb-2">
+                    {item.volumeInfo.industryIdentifiers &&
+                      item.volumeInfo.industryIdentifiers.map((isbn) => (
+                        <li className="list-inline-item" key={isbn.identifier}>
+                          {isbn.type}: {isbn.identifier}
+                        </li>
+                      ))}
+                  </ul>
+
+                  {/* item description */}
                   {trimDescription(item.volumeInfo.description)}
+
+                  {/* action buttons */}
                   <div className="mt-3">
                     <button
                       type="button"
                       className="btn btn-sm btn-dark mr-1"
                       onClick={handleAmazon.bind(this, item.volumeInfo.title)}
                     >
-                      Buy on Amazon
+                      <i className="fab fa-amazon"></i>{" "}
+                      {Constants.BTN_BUY_ON_AMAZON}
                     </button>
                     <button
                       type="button"
                       className="btn btn-sm btn-outline-info"
                       onClick={handleShowModal}
                     >
-                      Info...
+                      <i className="fal fa-info-circle"></i>{" "}
+                      {Constants.BTN_MORE_INFO}
                     </button>
                   </div>
                 </div>

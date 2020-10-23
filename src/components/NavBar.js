@@ -12,7 +12,7 @@ const NavBar = () => {
         sticky="top"
       >
         <Navbar.Brand as={NavLink} href="/">
-          <span className="text-success">KrieBooks</span>
+          <span className="text-primary">books.kriewall.com</span>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         {/* <Navbar.Collapse id='basic-navbar-nav'>
