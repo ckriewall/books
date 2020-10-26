@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import Footer from "./components/Footer";
+import Home from "./components/Home";
 import NavBar from "./components/NavBar";
 import BookList from "./components/BookList";
 
@@ -10,6 +11,7 @@ function App() {
     <div className="App">
       <NavBar />
       <Container fluid>
+        <Home />
         <Row>
           <Col>
             <Switch>
